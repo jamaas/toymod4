@@ -6,12 +6,12 @@
 
 fun1 <- function (num.sim=10, num.per=8, num.day=5,
                   var21=0.05, var22=9.876,
-                  ...) {                  
+                  ...) {
 
     final.results <- data.frame (foreach::`%dopar%`(
             foreach::`%:%`(foreach::foreach(j = 1:num.sim,
                                             .combine = cbind,
-                                            .packages="toymod2",
+                                            .packages="toymod3",
                                             .export = c("fun2", "fun3")),
                            foreach::foreach (i = 1:num.per, .combine=rbind)),
             {

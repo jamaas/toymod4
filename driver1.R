@@ -10,6 +10,9 @@ cl <- doMPI::startMPIcluster(count=10)
 doMPI::registerDoMPI(cl)
 ##doMPI::exportDoMPI(cl, c('fun2', 'fun3'))
 
+search()
+
+
 (fun3(fun3on = TRUE))
 
 (fun1())
