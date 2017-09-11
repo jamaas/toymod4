@@ -4,15 +4,15 @@
 \alias{fun1}
 \title{Test function level 1}
 \usage{
-fun1(var11 = 10, var12 = 8, var13 = 5, var21 = 0.05, var22 = 9.876,
-  fun3on = TRUE, ...)
+fun1(num.sim = 10, num.per = 8, num.day = 5, var21 = 0.05,
+  var22 = 9.876, ...)
 }
 \arguments{
-\item{var11}{first variable for function 1}
+\item{num.sim}{first variable for function 1}
 
-\item{var12}{second variable for function 1}
+\item{num.per}{second variable for function 1}
 
-\item{var13}{third variable for function 1}
+\item{num.day}{third variable for function 1}
 }
 \description{
 Test function level 1
