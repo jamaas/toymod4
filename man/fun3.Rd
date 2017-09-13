@@ -9,10 +9,6 @@ fun3(...)
 \arguments{
 \item{var31}{first variable for function 3}
 
-\item{var32}{second variable for function 3}
-
-\item{var33}{third variable for function 3}
-
 \item{fun3on}{turn the formula on or off}
 }
 \description{

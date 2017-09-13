@@ -1,7 +1,4 @@
 rm(list=ls(all=TRUE))
-
-## cl <- doMPI::startMPIcluster(count=4)
-## doMPI::registerDoMPI(cl)
 library(doParallel)
 cl <-makeCluster(5)
 registerDoParallel(cl)
@@ -28,4 +25,4 @@ fun3on=TRUE
 (fun1())
 
 stopCluster(cl)
-doMPI::closeCluster(cl)
+
