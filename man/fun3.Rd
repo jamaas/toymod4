@@ -4,7 +4,7 @@
 \alias{fun3}
 \title{Test function level 3}
 \usage{
-fun3(var31 = 1.396, var32 = 14.387, var33 = 3.219, fun3on = TRUE, ...)
+fun3(...)
 }
 \arguments{
 \item{var31}{first variable for function 3}

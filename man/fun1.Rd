@@ -4,8 +4,7 @@
 \alias{fun1}
 \title{Test function level 1}
 \usage{
-fun1(num.sim = 10, num.per = 8, num.day = 5, var21 = 0.05,
-  var22 = 9.876, ...)
+fun1(num.sim = 10, num.per = 8, num.day = 5, ...)
 }
 \arguments{
 \item{num.sim}{first variable for function 1}

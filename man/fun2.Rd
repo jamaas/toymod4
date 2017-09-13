@@ -4,7 +4,7 @@
 \alias{fun2}
 \title{Test function level 2}
 \usage{
-fun2(var21 = 0.05, var22 = 9.876, ...)
+fun2(var21 = 0.5, var22 = 5, ...)
 }
 \arguments{
 \item{var21}{first variable for function 2}
