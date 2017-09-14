@@ -4,12 +4,12 @@
 \alias{fun3}
 \title{Test function level 3}
 \usage{
-fun3(...)
+fun3(fun3on, var31, ...)
 }
 \arguments{
-\item{var31}{first variable for function 3}
-
 \item{fun3on}{turn the formula on or off}
+
+\item{var31}{first variable for function 3}
 }
 \description{
 Test function level 3
