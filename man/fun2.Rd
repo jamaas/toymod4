@@ -4,7 +4,7 @@
 \alias{fun2}
 \title{Test function level 2}
 \usage{
-fun2(fun31.params, fun32.params, var21 = 0.5, var22 = 5, fun32on = TRUE,
+fun2(fun31.params, fun32.params, var21 = 0.5, var22 = 5, fun22on = TRUE,
   ...)
 }
 \arguments{

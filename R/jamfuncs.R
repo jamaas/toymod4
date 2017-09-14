@@ -9,7 +9,7 @@ fun1 <- function (fun2.params, fun31.params, fun32.params, num.sim=10,
     final.results <- data.frame (foreach::`%dopar%`(
         foreach::`%:%`(foreach::foreach(j = 1:num.sim,
                                         .combine = cbind,
-                                        .packages= "toymod3"),
+                                        .packages= "toymod4"),
                        foreach::foreach (i = 1:num.per, .combine=rbind)),
         {
             out3 <- replicate(num.day,
@@ -35,9 +35,9 @@ fun1 <- function (fun2.params, fun31.params, fun32.params, num.sim=10,
 #' @param fun32on turn this copy of fun3 on or off
 #' @export fun2
 
-fun2 <- function (fun31.params, fun32.params, var21=0.5, var22=5, fun32on = TRUE, ...) {
+fun2 <- function (fun31.params, fun32.params, var21=0.5, var22=5, fun22on = TRUE, ...) {
     out21 <- ifelse (rpois(1, var21) > 0, var22 * do.call(fun3, fun31.params), 0)
-    out22 <- ifelse (fun32on, do.call(fun3, fun32.params), 0 )
+    out22 <- ifelse (fun22on, do.call(fun3, fun32.params), 0 )
     out2 <- out21 + out22
 }
 
