@@ -35,7 +35,7 @@ fun1 <- function (fun2.params, fun31.params, fun32.params, num.sim=10,
 #' @param fun32on turn this copy of fun3 on or off
 #' @export fun2
 
-fun2 <- function (fun31.params, fun32.params, var21=0.5, var22=5, fun22on = TRUE, ...) {
+fun2 <- function (fun31.params, fun32.params, var21, var22, fun22on, ...) {    
     out21 <- ifelse (rpois(1, var21) > 0, var22 * do.call(fun3, fun31.params), 0)
     out22 <- ifelse (fun22on, do.call(fun3, fun32.params), 0 )
     out2 <- out21 + out22
