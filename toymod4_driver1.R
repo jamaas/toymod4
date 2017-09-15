@@ -10,38 +10,55 @@ fun1.params <- list(num.sim = 10, num.per = 8, num.day = 5)
 fun2.params <- list(fun22on = TRUE, var21 = 0.5, var22 = 5)
 fun31.params <- list(fun3on = TRUE, var31 = 500)
 fun32.params <- list(fun3on = TRUE, var31 = 183)
+fun4.params <- list(fun4on = TRUE, var41 = 36.3)
 
 ## run a first simulation with default values
-do.call(fun1,(c(list(fun31.params = fun31.params,
-                    fun32.params = fun32.params,
-                    fun2.params = fun2.params),
-               fun1.params)))
+do.call(fun1,(c(list(fun4.params = fun4.params,
+                     fun31.params = fun31.params,
+                     fun32.params = fun32.params,
+                     fun2.params = fun2.params),
+                fun1.params)))
 
 ## change a level 1 argument value and see if it changes
 fun1.params <- list(num.sim = 10, num.per = 20, num.day = 5)
-do.call(fun1,(c(list(fun31.params = fun31.params,
-                    fun32.params = fun32.params,
-                    fun2.params = fun2.params),
-               fun1.params)))
+
+do.call(fun1,(c(list(fun4.params = fun4.params,
+                     fun31.params = fun31.params,
+                     fun32.params = fun32.params,
+                     fun2.params = fun2.params),
+                fun1.params)))
+
 
 
 ## change a level 2 function value and see if it changes results
 fun2.params <- list(fun22on = FALSE, var21 = 0.5, var22 = 5)
 fun1.params <- list(num.sim = 10, num.per = 8, num.day = 5)
-do.call(fun1,(c(list(fun31.params = fun31.params,
-                    fun32.params = fun32.params,
-                    fun2.params = fun2.params),
-               fun1.params)))
+do.call(fun1,(c(list(fun4.params = fun4.params,
+                     fun31.params = fun31.params,
+                     fun32.params = fun32.params,
+                     fun2.params = fun2.params),
+                fun1.params)))
 
 
 ## change a level 3 function value and see if it changes results
 fun2.params <- list(fun22on = TRUE, var21 = 0.5, var22 = 5)
 fun31.params <- list(fun3on = TRUE, var31 = 500)
 fun32.params <- list(fun3on = FALSE, var31 = 500)
-do.call(fun1,(c(list(fun31.params = fun31.params,
-                    fun32.params = fun32.params,
-                    fun2.params = fun2.params),
-               fun1.params)))
+do.call(fun1,(c(list(fun4.params = fun4.params,
+                     fun31.params = fun31.params,
+                     fun32.params = fun32.params,
+                     fun2.params = fun2.params),
+                fun1.params)))
+
+## change a level 4 function value and see if it changes results
+fun32.params <- list(fun3on = TRUE, var31 = 500)
+fun4.params <- list(fun4on = FALSE, var41 = 36.1)
+
+do.call(fun1,(c(list(fun4.params = fun4.params,
+                     fun31.params = fun31.params,
+                     fun32.params = fun32.params,
+                     fun2.params = fun2.params),
+                fun1.params)))
 
 
 ## close down the cluster
