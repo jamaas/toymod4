@@ -4,7 +4,7 @@
 \alias{fun4}
 \title{Test function level 4}
 \usage{
-fun4(fun4on, var41, ...)
+fun4(env, fun4on, var41, ...)
 }
 \arguments{
 \item{fun4on}{turn the formula on or off}

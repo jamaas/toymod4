@@ -8,6 +8,14 @@ fun1(fun2.params, fun31.params, fun32.params, fun4.params, num.sim = 10,
   num.per = 8, num.day = 5, ...)
 }
 \arguments{
+\item{fun2.params}{parameters for function 2}
+
+\item{fun31.params}{parameters for first call of function 3}
+
+\item{fun32.params}{parameters for second call of funtion 3}
+
+\item{fun4.params}{parameters for call to function 4}
+
 \item{num.sim}{first variable for function 1}
 
 \item{num.per}{second variable for function 1}
