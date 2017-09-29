@@ -1,25 +1,18 @@
+## Create environment used to hold "global" data used by various package
+## functions
+.mpi.env <- new.env(parent=emptyenv())
+
 #' Test function level 1
-#' @param num.sim first variable for function 1
-#' @param num.per second variable for function 1
-#' @param num.day third variable for function 1
-#' @param fun2.params parameters for function 2
-#' @param fun31.params parameters for first call of function 3
-#' @param fun32.params parameters for second call of funtion 3
-#' @param fun4.params parameters for call to function 4
 #' @export fun1
-fun1 <- function (fun2.params, fun31.params, fun32.params, fun4.params,
-                  num.sim=10, num.per=8, num.day=5, ...) {
+fun1 <- function (num.sim=10, num.per=8, num.day=5, ...) {
     final.results <- data.frame (foreach::`%dopar%`(
         foreach::`%:%`(foreach::foreach(j = 1:num.sim,
                                         .combine = cbind,
-                                        .packages= c("toymod4")),
+                                        .packages= 'toymod4'),
                        foreach::foreach (i = 1:num.per,
-                                         .packages = c("toymod4"),
+                                         .packages = 'toymod4',
                                          .combine=rbind)), {
-            e1 <- new.env()
-            e1 <- list2env(c(fun2.params, fun31.params, fun32.params,
-                             fun4.params), e1)
-            out3 <- replicate(num.day, fun2(e1, var21, var22, fun22on))
+            out3 <- replicate(num.day, fun2())
             out2 <- data.frame(mean(out3))
         }
     )
@@ -32,40 +25,80 @@ fun1 <- function (fun2.params, fun31.params, fun32.params, fun4.params,
 }
 
 #' Test function level 2
-#' @param var21 first variable for function 2
-#' @param var22 second variable for function 2
-#' @param fun22on turn this copy of fun3 on or off
-#' @param env environment to get variables from 
 #' @export fun2
-fun2 <- function (env, var21, var22, fun22on, ...) {
-    attach(env)
-    out21 <- ifelse (rpois(1, var21) > 0, var22 * fun3(e1, fun3on, var31), 0)
-    out22 <- ifelse (fun22on, fun3(e1, fun3on, var31), 0)
+fun2 <- function () {
+    var21 <- get('var21', pos = .mpi.env)
+    ## get('var22', pos = .mpi.env)
+    ## get('fun22on', pos = .mpi.env)    
+##    out21 <- ifelse (rpois(1, get('var21', pos = .mpi.env)) > 0,
+    out21 <- ifelse (rpois(1, var21) > 0,                     
+                     get('var22', pos = .mpi.env) * fun3(),
+                     0)
+    out22 <- ifelse ( get('fun22on', pos = .mpi.env),
+                     fun3(),
+                     0)
     out2 <- out21 + out22
-    detach(env)
-    out2
 }
 
 #' Test function level 3
-#' @param var31 first variable for function 3
-#' @param fun3on turn the formula on or off
 #' @export fun3
-fun3 <- function (env, fun3on, var31, ...) {
-    attach(env)
-    out31 <- ifelse (fun3on, var31, 1)
-    out32 <- ifelse (fun3on, fun4(e1, fun4on, var41), 0)
+fun3 <- function () {
+    ## get('var31', pos = .mpi.env)
+    ## get('fun3on', pos = .mpi.env)
+    out31 <- ifelse (get('fun3on', pos = .mpi.env),
+                     get('var31', pos = .mpi.env),
+                     1)
+    out32 <- ifelse (get('fun3on', pos = .mpi.env),
+                     fun4(),
+                     0)
     out3 <- out31 + out32
-    detach(env)
-    out3
 }
 
 #' Test function level 4
-#' @param var41 first variable for function 4
-#' @param fun4on turn the formula on or off
 #' @export fun4
-fun4 <- function (env, fun4on, var41, ...) {
-    attach(env)
-    out4 <- ifelse (fun4on, var41, 1)
-    detach(env)
-    out4
+fun4 <- function () {
+    ## get('var41', pos = .mpi.env)
+    ## get('fun4on', pos = .mpi.env)
+    out4 <- ifelse (get('fun4on', pos = .mpi.env),
+                    get('var41', pos = .mpi.env),
+                    1)
+}
+
+
+## Assign values to variables in ".mpi.env" in the local R session
+#' local regular arguments localregargs function
+#' @export localregargs
+localregargs <- function(var21, var22, fun22on, var31, fun3on, var41,
+                         fun4on) {
+    assign('var21', var21, pos = .mpi.env)
+    assign('var22', var22, pos = .mpi.env)
+    assign('fun22on', fun22on, pos = .mpi.env)
+    assign('var31', var31, pos = .mpi.env)
+    assign('fun3on', fun3on, pos = .mpi.env)
+    assign('var41', var41, pos = .mpi.env)
+    assign('fun4on', fun4on, pos = .mpi.env)    
+    invisible(NULL)
+}
+
+
+## Register values of "var21", "var22".... It does that by calling localregargs
+## directly and in a foreach loop. Calling it directly is necessary when the
+## workers are forked, and calling it in a foreach loop is necessary when the
+## workers are started via makeCluster or startMPIcluster.  Using both
+## mechanisms keeps them consistent and avoids the problem of figuring out which
+## mechanism is necessary.
+#' regular arguments regargs function
+#' @export regargs
+regargs <- function(var21, var22, fun22on, var31, fun3on, var41,
+                         fun4on) {
+  ## Necessary for doMC and doParallelMC.
+  ## Doesn't hurt for doParallelSNOW and doMPI.
+  localregargs(var21, var22, fun22on, var31, fun3on, var41, fun4on)
+
+  ## Necessary for doParallelSNOW and doMPI.
+  ## Doesn't hurt for doMC and doParallelMC.
+  foreach(seq_len(getDoParWorkers()), .packages='toymod4') %dopar% {
+    localregargs(var21, var22, fun22on, var31, fun3on, var41, fun4on)
+  }
+  invisible(NULL)
 }

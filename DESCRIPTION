@@ -1,18 +1,19 @@
 Package: toymod4
 Title: Toy model to get doMPI, foreach to work inside an R package
-Version: 0.1
+Version: 0.2
 Authors@R: person("James", "Maas", email = "jimmaasuk@gmail.com", role = c("aut", "cre"))
 Description: A toy model package to do parallel calculations with doMPI, also branches.
-Depends: R (>= 3.4.0)
+Depends: R (>= 2.5.0), foreach(>= 1.2.0)
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Collate:
     'jamfuncs.R'
 Imports:
-    doMPI,
     foreach,
     FAdist,
     msm,
     zoo
+NeedsCompilation: no
+Packaged: Fri 29 Sep 10:11:07 BST 2017;JAM-Home-PC 
 RoxygenNote: 6.0.1

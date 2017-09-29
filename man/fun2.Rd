@@ -4,16 +4,7 @@
 \alias{fun2}
 \title{Test function level 2}
 \usage{
-fun2(env, var21, var22, fun22on, ...)
-}
-\arguments{
-\item{env}{environment to get variables from}
-
-\item{var21}{first variable for function 2}
-
-\item{var22}{second variable for function 2}
-
-\item{fun22on}{turn this copy of fun3 on or off}
+fun2()
 }
 \description{
 Test function level 2

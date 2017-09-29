@@ -4,12 +4,7 @@
 \alias{fun4}
 \title{Test function level 4}
 \usage{
-fun4(env, fun4on, var41, ...)
-}
-\arguments{
-\item{fun4on}{turn the formula on or off}
-
-\item{var41}{first variable for function 4}
+fun4()
 }
 \description{
 Test function level 4
