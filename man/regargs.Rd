@@ -4,7 +4,7 @@
 \alias{regargs}
 \title{regular arguments regargs function}
 \usage{
-regargs(var21, var22, fun22on, var31, fun3on, var41, fun4on)
+regargs(fun2vars, fun3vars, fun4vars)
 }
 \description{
 regular arguments regargs function

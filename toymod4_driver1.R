@@ -8,58 +8,31 @@ library(toymod4)
 cl <- doMPI::startMPIcluster(count=6)
 doMPI::registerDoMPI(cl)
 
+fun2vars <- list(fun22on = TRUE, var21 = 0.5, var22 = 5)
+fun3vars <- list(fun3on =TRUE, var31 = 500)
+fun4vars <- list(var41 = 36.0, fun4on = TRUE)
+
 ## set values for all regular arguments required
-regargs(fun22on = TRUE, var21 = 0.5, var22 = 5, 
-        var31 = 500, fun3on = TRUE,
-        var41 = 36.3, fun4on = TRUE)
+regargs(fun2vars = fun2vars,
+        fun3vars = fun3vars,
+        fun4vars = fun4vars)
 
 ## run the top level function which calls the others
-fun1(num.sim = 10, num.per = 8, num.day = 5)
+fun1(num.sim = 10, num.per = 8, num.day = 50)
 
-fun1(num.sim = 12, num.per = 5, num.day = 5)
+fun2vars <- list(fun22on = TRUE, var21 = 0.5, var22 = 5)
+fun3vars <- list(fun3on = TRUE, var31 = 5)
+fun4vars <- list(var41 = 30, fun4on = TRUE)
 
-regargs(fun22on = FALSE, var21 = 0.5, var22 = 5, 
-        var31 = 500, fun3on = FALSE,
-        var41 = 36.3, fun4on = FALSE)
+## set values for all regular arguments required
+regargs(fun2vars = fun2vars,
+        fun3vars = fun3vars,
+        fun4vars = fun4vars)
 
-fun1(num.sim = 12, num.per = 5, num.day = 5)
+## run the top level function which calls the others
+fun1(num.sim = 10, num.per = 8, num.day = 50)
 
-regargs(fun22on = TRUE, var21 = 0.5, var22 = 5, 
-        var31 = 500, fun3on = FALSE,
-        var41 = 36.3, fun4on = FALSE)
-
-fun1(num.sim = 12, num.per = 5, num.day = 5)
-regargs(fun22on = TRUE, var21 = 0.5, var22 = 5, 
-        var31 = 500, fun3on = TRUE,
-        var41 = 36.3, fun4on = FALSE)
-
-fun1(num.sim = 12, num.per = 5, num.day = 5)
 
 closeCluster(cl)
 mpi.quit()
 
-## ## set up the lists of parameters
-## fun1.params <- list(num.sim = 10, num.per = 8, num.day = 5)
-## fun2.params <- list(fun22on = TRUE, var21 = 0.5, var22 = 5)
-## fun31.params <- list(fun3on = TRUE, var31 = 500)
-## fun32.params <- list(fun3on = TRUE, var31 = 183)
-## fun4.params <- list(fun4on = TRUE, var41 = 36.3)
-
-## ## run a first simulation with default values
-## do.call(fun1,(c(list(fun4.params = fun4.params,
-##                      fun31.params = fun31.params,
-##                      fun32.params = fun32.params,
-##                      fun2.params = fun2.params),
-##                 fun1.params)))
-
-## ## change a level 1 argument value and see if it changes
-## fun1.params <- list(num.sim = 10, num.per = 20, num.day = 5)
-
-## do.call(fun1,(c(list(fun4.params = fun4.params,
-##                      fun31.params = fun31.params,
-##                      fun32.params = fun32.params,
-##                      fun2.params = fun2.params),
-##                 fun1.params)))
-
-## ## close down the cluster
-## doMPI::closeCluster(cl)

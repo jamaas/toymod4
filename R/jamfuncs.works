@@ -24,18 +24,16 @@ fun1 <- function (num.sim=10, num.per=8, num.day=5, ...) {
     return(final.results)
 }
 
-
-## Because the individual variable values arrive in lists, it makes them quite
-## difficult to extract, note
-## (get('listname', environment of origin))[['variablename']]
-
 #' Test function level 2
 #' @export fun2
 fun2 <- function () {
-    out21 <- ifelse (rpois(1, (get('fun2vars', pos = .mpi.env))[['var21']] ) > 0,
-                     (get('fun2vars', pos = .mpi.env))[['var22']] * fun3(),
+    ## var21 <- get('var21', pos = .mpi.env)
+    ## get('var22', pos = .mpi.env)
+    ## get('fun22on', pos = .mpi.env)    
+    out21 <- ifelse (rpois(1, get('var21', pos = .mpi.env)) > 0,
+                     get('var22', pos = .mpi.env) * fun3(),
                      0)
-    out22 <- ifelse ((get('fun2vars', pos = .mpi.env))[['fun22on']],
+    out22 <- ifelse ( get('fun22on', pos = .mpi.env),
                      fun3(),
                      0)
     out2 <- out21 + out22
@@ -44,10 +42,12 @@ fun2 <- function () {
 #' Test function level 3
 #' @export fun3
 fun3 <- function () {
-    out31 <- ifelse ((get('fun3vars', pos = .mpi.env))[['fun3on']],
-                     (get('fun3vars', pos = .mpi.env))[['var31']],
+    ## get('var31', pos = .mpi.env)
+    ## get('fun3on', pos = .mpi.env)
+    out31 <- ifelse (get('fun3on', pos = .mpi.env),
+                     get('var31', pos = .mpi.env),
                      1)
-    out32 <- ifelse ((get('fun3vars', pos = .mpi.env))[['fun3on']],
+    out32 <- ifelse (get('fun3on', pos = .mpi.env),
                      fun4(),
                      0)
     out3 <- out31 + out32
@@ -56,8 +56,10 @@ fun3 <- function () {
 #' Test function level 4
 #' @export fun4
 fun4 <- function () {
-    out4 <- ifelse ((get('fun4vars', pos = .mpi.env))[['fun4on']],
-                    (get('fun4vars', pos = .mpi.env))[['var41']],
+    ## get('var41', pos = .mpi.env)
+    ## get('fun4on', pos = .mpi.env)
+    out4 <- ifelse (get('fun4on', pos = .mpi.env),
+                    get('var41', pos = .mpi.env),
                     1)
 }
 
@@ -65,32 +67,36 @@ fun4 <- function () {
 ## Assign values to variables in ".mpi.env" in the local R session
 #' local regular arguments localregargs function
 #' @export localregargs
-##localregargs <- function(var21, var22, fun22on, var31, fun3on, var41, fun4on) {
-localregargs <- function(fun2vars, fun3vars, fun4vars) {
-    assign('fun2vars', fun2vars, pos = .mpi.env)
-    assign('fun3vars', fun3vars, pos = .mpi.env)
-    assign('fun4vars', fun4vars, pos = .mpi.env)
+localregargs <- function(var21, var22, fun22on, var31, fun3on, var41,
+                                                  fun4on) {
+    assign('var21', var21, pos = .mpi.env)
+    assign('var22', var22, pos = .mpi.env)
+    assign('fun22on', fun22on, pos = .mpi.env)
+    assign('var31', var31, pos = .mpi.env)
+    assign('fun3on', fun3on, pos = .mpi.env)
+    assign('var41', var41, pos = .mpi.env)
+    assign('fun4on', fun4on, pos = .mpi.env)    
     invisible(NULL)
 }
 
-## Register values of "fun2vars", "fun3varsvar21", ... that are lists of
-## variable values. It does that by calling localregargs directly and in a
-## foreach loop. Calling it directly is necessary when the workers are forked,
-## and calling it in a foreach loop is necessary when the workers are started
-## via makeCluster or startMPIcluster.  Using both mechanisms keeps them
-## consistent and avoids the problem of figuring out which mechanism is
-## necessary.
+## Register values of "var21", "var22".... It does that by calling localregargs
+## directly and in a foreach loop. Calling it directly is necessary when the
+## workers are forked, and calling it in a foreach loop is necessary when the
+## workers are started via makeCluster or startMPIcluster.  Using both
+## mechanisms keeps them consistent and avoids the problem of figuring out which
+## mechanism is necessary.
 #' regular arguments regargs function
 #' @export regargs
-regargs <- function(fun2vars, fun3vars, fun4vars) {
+regargs <- function(var21, var22, fun22on, var31, fun3on, var41,
+                         fun4on) {
   ## Necessary for doMC and doParallelMC.
   ## Doesn't hurt for doParallelSNOW and doMPI.
-  localregargs(fun2vars, fun3vars, fun4vars)    
+  localregargs(var21, var22, fun22on, var31, fun3on, var41, fun4on)
 
   ## Necessary for doParallelSNOW and doMPI.
   ## Doesn't hurt for doMC and doParallelMC.
   foreach(seq_len(getDoParWorkers()), .packages='toymod4') %dopar% {
-    localregargs(fun2vars, fun3vars, fun4vars)      
+    localregargs(var21, var22, fun22on, var31, fun3on, var41, fun4on)
   }
   invisible(NULL)
 }

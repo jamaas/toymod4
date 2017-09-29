@@ -4,7 +4,7 @@
 \alias{localregargs}
 \title{local regular arguments localregargs function}
 \usage{
-localregargs(var21, var22, fun22on, var31, fun3on, var41, fun4on)
+localregargs(fun2vars, fun3vars, fun4vars)
 }
 \description{
 local regular arguments localregargs function
