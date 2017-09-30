@@ -1,8 +1,7 @@
-## Create environment used to hold "global" data used by various package
-## functions
-.mpi.env <- new.env(parent=emptyenv())
-
 #' Test function level 1
+#' @param num.sim first variable for function 1
+#' @param num.per second variable for function 1
+#' @param num.day third variable for function 1
 #' @export fun1
 fun1 <- function (num.sim=10, num.per=8, num.day=5, ...) {
     final.results <- data.frame (foreach::`%dopar%`(
@@ -24,12 +23,14 @@ fun1 <- function (num.sim=10, num.per=8, num.day=5, ...) {
     return(final.results)
 }
 
-
 ## Because the individual variable values arrive in lists, it makes them quite
 ## difficult to extract, note
 ## (get('listname', environment of origin))[['variablename']]
 
 #' Test function level 2
+#' @param var21 first variable for function 2
+#' @param var22 second variable for function 2
+#' @param fun22on turn this call to fun3 on or off
 #' @export fun2
 fun2 <- function () {
     out21 <- ifelse (rpois(1, (get('fun2vars', pos = .mpi.env))[['var21']] ) > 0,
@@ -42,6 +43,8 @@ fun2 <- function () {
 }
 
 #' Test function level 3
+#' @param var31 first variable for function 3
+#' @param fun3on turn the formula on or off
 #' @export fun3
 fun3 <- function () {
     out31 <- ifelse ((get('fun3vars', pos = .mpi.env))[['fun3on']],
@@ -54,43 +57,11 @@ fun3 <- function () {
 }
 
 #' Test function level 4
+#' @param var41 first variable for function 4
+#' @param fun4on turn the formula on or off
 #' @export fun4
 fun4 <- function () {
     out4 <- ifelse ((get('fun4vars', pos = .mpi.env))[['fun4on']],
                     (get('fun4vars', pos = .mpi.env))[['var41']],
                     1)
-}
-
-
-## Assign values to variables in ".mpi.env" in the local R session
-#' local regular arguments localregargs function
-#' @export localregargs
-##localregargs <- function(var21, var22, fun22on, var31, fun3on, var41, fun4on) {
-localregargs <- function(fun2vars, fun3vars, fun4vars) {
-    assign('fun2vars', fun2vars, pos = .mpi.env)
-    assign('fun3vars', fun3vars, pos = .mpi.env)
-    assign('fun4vars', fun4vars, pos = .mpi.env)
-    invisible(NULL)
-}
-
-## Register values of "fun2vars", "fun3varsvar21", ... that are lists of
-## variable values. It does that by calling localregargs directly and in a
-## foreach loop. Calling it directly is necessary when the workers are forked,
-## and calling it in a foreach loop is necessary when the workers are started
-## via makeCluster or startMPIcluster.  Using both mechanisms keeps them
-## consistent and avoids the problem of figuring out which mechanism is
-## necessary.
-#' regular arguments regargs function
-#' @export regargs
-regargs <- function(fun2vars, fun3vars, fun4vars) {
-  ## Necessary for doMC and doParallelMC.
-  ## Doesn't hurt for doParallelSNOW and doMPI.
-  localregargs(fun2vars, fun3vars, fun4vars)    
-
-  ## Necessary for doParallelSNOW and doMPI.
-  ## Doesn't hurt for doMC and doParallelMC.
-  foreach(seq_len(getDoParWorkers()), .packages='toymod4') %dopar% {
-    localregargs(fun2vars, fun3vars, fun4vars)      
-  }
-  invisible(NULL)
 }

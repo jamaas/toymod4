@@ -8,12 +8,13 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Collate:
-    'jamfuncs.R'
+    'ForeachParamsPass.R'
+    'NestedFuncs.R'
 Imports:
     foreach,
     FAdist,
     msm,
     zoo
 NeedsCompilation: no
-Packaged: Fri 29 Sep 10:11:07 BST 2017;JAM-Home-PC 
+Packaged: Sat 30 Sep 5:55:07 BST 2017;JAM-Home-PC 
 RoxygenNote: 6.0.1
