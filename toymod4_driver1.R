@@ -8,10 +8,6 @@ library(toymod4)
 cl <- doMPI::startMPIcluster(count=6)
 doMPI::registerDoMPI(cl)
 
-fun2vars <- list(fun22on = TRUE, var21 = 0.5, var22 = 5)
-fun3vars <- list(fun3on =TRUE, var31 = 500)
-fun4vars <- list(var41 = 36.7256, fun4on = TRUE)
-
 ## set values for all regular arguments required
 regargs(fun2vars = fun2vars,
         fun3vars = fun3vars,

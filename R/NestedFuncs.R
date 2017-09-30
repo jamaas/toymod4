@@ -1,3 +1,11 @@
+## This is a toy model of a much bigger model, and it demonstrates a way to pass
+## parameter values, essentially "around" the foreach statement so they get to
+## each worker when using foreach and running in parallel.  This model must be
+## run with two other files, 'DefaultParams.R' and 'ForeachParamsPass.R'.  It was
+## created on 30/09/2017.
+
+## Last updated on 30/09/2017
+
 #' Test function level 1
 #' @param num.sim first variable for function 1
 #' @param num.per second variable for function 1
