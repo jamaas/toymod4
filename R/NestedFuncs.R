@@ -19,7 +19,7 @@ fun1 <- function (num.sim=10, num.per=8, num.day=5, ...) {
                        foreach::foreach (i = 1:num.per,
                                          .packages = 'toymod4',
                                          .combine=rbind)), {
-            out3 <- replicate(num.day, fun2())
+            out3 <- replicate(num.day, eval(call("fun2")))
             out2 <- data.frame(mean(out3))
         }
     )
